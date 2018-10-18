@@ -7,12 +7,12 @@ program
 
 mainClass
 	:
-		'class' Identifier LBrackets mainMethod RBrackets
+		CLASS Identifier LBrackets mainMethod RBrackets
 	;
 
 classDefinition
 	:
-		'class' Identifier extendClause LBrackets (variableDeclaration)* (method)* RBrackets
+		CLASS Identifier extendClause LBrackets (variableDeclaration)* (method)* RBrackets
 	;
 
 mainMethod
@@ -22,124 +22,124 @@ mainMethod
 
 method
 	:
-		DEF Identifier LParentheses Arguments RParentheses COLON TYPE LBrackets methodBody RBrackets
+		DEF Identifier LParentheses arguments RParentheses COLON TYPE LBrackets methodBody RBrackets
 	;
 
 methodBody
 	:
-		(variableDeclaration)* (Statement)* ReturnExpression
+		(variableDeclaration)* (statement)* returnexpression
 	;	
 
-Statement
+statement
 	:
-		Assignment | Conditional | Loop | PrintStatement | methodCall
+		assignment | conditional | loop | printstatement | methodCall
 	;
 
-Assignment 
+assignment 
 	:
-		( Identifier | THIS DOT Identifier ) AssignmentOperator Expression Delimiter
+		( Identifier | THIS DOT Identifier ) AssignmentOperator expression Delimiter
 	;
 
-Conditional
+conditional
 	:
-		IF LParentheses Condition RParentheses THEN Statement 
-		| IF LParentheses Condition RParentheses THEN Statement ELSE Statement
+		IF LParentheses condition RParentheses THEN statement 
+		| IF LParentheses condition RParentheses THEN statement ELSE statement
 	;
 
-Condition
+condition
 	:
-		LogicalExpression | BooleanValue
+		logicalexpression | BooleanValue
 	;
 
-Loop
+loop
 	:
-		WHILE LParentheses Condition RParentheses LBrackets (Statement)* RBrackets
+		WHILE LParentheses condition RParentheses LBrackets (statement)* RBrackets
 	;
 
-PrintStatement
+printstatement
 	:
-		PrintCommand LParentheses Expression RParentheses
+		PrintCommand LParentheses expression RParentheses
 	;
 
-fragment Arguments
+arguments
 	:
 		(Identifier COLON TYPE COMMA)* (Identifier COLON TYPE)
 		|  
 	;
 
-ReturnExpression
+returnexpression
 	:
-		RETURN ReturnValue Delimiter
+		RETURN returnValue Delimiter
 	;
 
-ReturnValue
+returnValue
 	:
-		Expression
+		expression
 	;
 
-Expression
+expression
 	:
-		LogicalExpression | String | BooleanValue | ClassInstantiation
+		logicalexpression | string | BooleanValue | classInstantiation
 	;
 
-LogicalExpression
+logicalexpression
 	:
-		(UnaryLogicalOperators + UnaryArithmaticalOperators) LogicalAtomExpression HalfLogicalExpression LogicalExpressionPrime 
-		| LParentheses LogicalExpression RParentheses LogicalExpressionPrime
-		| LogicalTerm AnyBinaryOperator LogicalAtomExpression HalfLogicalExpression LogicalExpressionPrime
+		(UnaryLogicalOperators + UnaryArithmaticalOperators) logicalAtomexpression halflogicalexpression logicalexpressionPrime 
+		| LParentheses logicalexpression RParentheses logicalexpressionPrime
+		| logicalTerm anyBinaryOperator logicalAtomexpression halflogicalexpression logicalexpressionPrime
 	;
 
-fragment HalfLogicalExpression 
+halflogicalexpression 
 	:
-		( AnyBinaryOperator LogicalAtomExpression)*
+		( anyBinaryOperator logicalAtomexpression)*
 	;
 
-fragment LogicalExpressionPrime
+logicalexpressionPrime
 	:
-		AnyBinaryOperator LogicalAtomExpression HalfLogicalExpression LogicalExpressionPrime
+		anyBinaryOperator logicalAtomexpression halflogicalexpression logicalexpressionPrime
 		| 
 	;
 
-LogicalAtomExpression
+logicalAtomexpression
 	:
-		LogicalExpression
-		| LogicalTerm
+		logicalexpression
+		| logicalTerm
 	;
 
-AnyBinaryOperator
+anyBinaryOperator
 	:
 		ComparisonOperators | BinaryLogicalOperators | BinaryArithmaticalOperatorsPriorityOne | BinaryArithmaticalOperatorsPriorityTwo
 	;
 
-LogicalTerm
+logicalTerm
 	:
 		Identifier
 		| Number
 		| BooleanValue
 		| arrayAccess
-		| SelfVariableAccess
-		| SelfMethodAccess
-		| ArrayLength
-		| MethodCall
-		| ClassInstantiationAndCall
+		| selfVariableAccess
+		| selfMethodAccess
+		| arrayLength
+		| methodCall
+		| classInstantiationAndCall
 	;
 
-SelfVariableAccess
+selfVariableAccess
 	:
 		THIS DOT Identifier
 	;
 
-SelfMethodAccess
+selfMethodAccess
 	:
-		THIS DOT Identifier (PassingArgument | )
+		THIS DOT Identifier (passingArgument | )
 	;
 
-ArrayLength
+arrayLength
 	:
 		Identifier DOT LENGTH
 	;
 
-String
+string
 	:
 		Quotation StringSentence Quotation
 	;
@@ -155,29 +155,30 @@ extendClause
 		|  
 	;
 
-ArrayDefinition
+
+arrayDefinition
 	:
 		'new int' LSquareBrackets Number RSquareBrackets 
 	;
 
-ClassInstantiation
+classInstantiation
 	:
 		'new' Identifier LParentheses RParentheses 
 	;
 
-ClassInstantiationAndCall
+classInstantiationAndCall
 	:
-		ClassInstantiation DOT Identifier (PassingArgument | LParentheses RParentheses)
+		classInstantiation DOT Identifier (passingArgument | LParentheses RParentheses)
 	;
 
 methodCall
 	:
-		 Identifier DOT Identifier (PassingArgument | LParentheses RParentheses)
+		 Identifier DOT Identifier (passingArgument | LParentheses RParentheses)
 	;
 
-PassingArgument
+passingArgument
 	:
-		LParentheses (Expression COMMA)* Expression RParentheses
+		LParentheses (expression COMMA)* expression RParentheses
 	;
 
 arrayAccess
@@ -185,8 +186,6 @@ arrayAccess
 		Identifier LSquareBrackets Number RSquareBrackets
 	;
 
-
-// lexer rules are down here and parser rules are up there
 
 
 EXTENDS
@@ -400,3 +399,5 @@ WhiteSpace
 	:
 		[\n\t\r ]+ -> skip
 	;
+
+
