@@ -2,32 +2,32 @@ grammar our_smoola;
 
 program
 	:
-		MainClass (ClassDefinition)*
+		mainClass (classDefinition)*
 	;
 
-MainClass
+mainClass
 	:
-		CLASS Identifier LBrackets MainMethod RBrackets
+		CLASS Identifier LBrackets mainMethod RBrackets
 	;
 
-ClassDefinition
+classDefinition
 	:
-		CLASS Identifier ExtendClause LBrackets (VariableDeclaration)* (Method)* RBrackets
+		CLASS Identifier extendClause LBrackets (variableDeclaration)* (method)* RBrackets
 	;
 
-MainMethod
+mainMethod
 	:
-		DEF 'main' LParentheses RParentheses COLON 'int' LBrackets MethodBody RBrackets
+		DEF 'main' LParentheses RParentheses COLON 'int' LBrackets methodBody RBrackets
 	;
 
-Method
+method
 	:
-		DEF Identifier LParentheses Arguments RParentheses COLON TYPE LBrackets MethodBody RBrackets
+		DEF Identifier LParentheses Arguments RParentheses COLON TYPE LBrackets methodBody RBrackets
 	;
 
-MethodBody
+methodBody
 	:
-		(VariableDeclaration)* (Statement)* ReturnExpression
+		(variableDeclaration)* (Statement)* ReturnExpression
 	;	
 
 Statement
@@ -144,7 +144,7 @@ String
 		Quotation StringSentence Quotation
 	;
 
-VariableDeclaration
+variableDeclaration
 	:
 		VAR Identifier COLON (TYPE | 'int' LSquareBrackets RSquareBrackets) Delimiter
 	;
