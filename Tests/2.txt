@@ -1,0 +1,16 @@
+class Test {
+	def main() : int {
+		var i : int;
+		return 0;
+	}
+}
+
+class Book {
+	var j : int [];
+	var k : boolean; 
+
+	def x (f1: int) : int {
+		j = 5;
+		return 3+5+(3||true);
+	}
+}

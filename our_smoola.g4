@@ -22,7 +22,7 @@ mainMethod
 
 method
 	:
-		DEF Identifier LParentheses arguments RParentheses COLON TYPE LBrackets methodBody RBrackets
+		DEF Identifier LParentheses arguments RParentheses COLON type LBrackets methodBody RBrackets
 	;
 
 methodBody
@@ -63,7 +63,7 @@ printstatement
 
 arguments
 	:
-		(Identifier COLON TYPE COMMA)* (Identifier COLON TYPE)
+		(Identifier COLON type COMMA)* (Identifier COLON type)
 		|  
 	;
 
@@ -79,7 +79,7 @@ returnValue
 
 expression
 	:
-		logicalexpression | string | BooleanValue | classInstantiation
+		logicalexpression | string | BooleanValue | classInstantiation | logicalTerm
 	;
 
 logicalexpression
@@ -146,7 +146,8 @@ string
 
 variableDeclaration
 	:
-		VAR Identifier COLON (TYPE | 'int' LSquareBrackets RSquareBrackets) Delimiter
+		VAR Identifier COLON type Delimiter
+		| VAR Identifier COLON 'int' LSquareBrackets RSquareBrackets Delimiter
 	;
 
 extendClause
@@ -186,6 +187,12 @@ arrayAccess
 		Identifier LSquareBrackets Number RSquareBrackets
 	;
 
+type
+	:
+		 'string'
+		| 'int'
+		| 'boolean'
+	;
 
 
 EXTENDS
@@ -243,14 +250,6 @@ LENGTH
 		'length'
 	;
 
-TYPE
-	:
-		 'string'
-		| 'int'
-		| 'boolean'
-	;
-
-
 BooleanValue
 	:
 		'true'
@@ -305,11 +304,6 @@ COLON
 COMMA
 	:
 		','
-	;
-
-DOT
-	:
-		'.' -> skip
 	;
 
 BinaryArithmaticalOperatorsPriorityOne
@@ -377,12 +371,12 @@ Comment
 
 StringSentence
 	:
-		[a-zA-Z_0-9]*
+		[a-zA-Z_0-9]+
 	;
 
 Sentense
 	:
-		[a-zA-Z_0-9%]*
+		[a-zA-Z_0-9%]+
 	;
 
 Dollor
@@ -400,4 +394,7 @@ WhiteSpace
 		[\n\t\r ]+ -> skip
 	;
 
-
+DOT
+	:
+		'.' -> skip
+	;
