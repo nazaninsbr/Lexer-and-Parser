@@ -32,12 +32,12 @@ MethodBody
 
 Statement
 	:
-		Assignment | Conditional | Loop | PrintStatement 
+		Assignment | Conditional | Loop | PrintStatement | MethodCall
 	;
 
 Assignment 
 	:
-		( Identifier | THIS DOT Identifier ) AssignmentOperator Expression Delimeter
+		( Identifier | THIS DOT Identifier ) AssignmentOperator Expression Delimiter
 	;
 
 Conditional
@@ -48,7 +48,7 @@ Conditional
 
 Condition
 	:
-		Expression
+		LogicalExpression | BooleanValue
 	;
 
 Loop
@@ -61,9 +61,9 @@ PrintStatement
 		PrintCommand LParentheses Expression RParentheses
 	;
 
-Arguments
+fragment Arguments
 	:
-		(Identifier COLON TYPE COMMA)*(Identifier COLON TYPE)
+		(Identifier COLON TYPE COMMA)* (Identifier COLON TYPE)
 		|  
 	;
 
@@ -79,69 +79,36 @@ ReturnValue
 
 Expression
 	:
-		MatheticalExpression | LogicalExpression | String | BooleanValue | ClassInstantiation
-	;
-
-MatheticalExpression 
-	:
-		MultiplyExpression
-        ( BinaryArithmaticalOperatorsPriorityTwo MultiplyExpression )*
-	;
-
-MultiplyExpression
-	:
-		AtomExpression
-        ( BinaryArithmaticalOperatorsPriorityOne AtomExpression )*
-    ;
-
-AtomExpression
-	:
-		MathematicalTerm
-		| (UnaryArithmaticalOperators |  ) LParentheses MatheticalExpression RParentheses 
-		| LogicalExpression
-	;
-
-MathematicalTerm
-	:
-		(UnaryArithmaticalOperators |  ) NumericalTerm
-	;
-
-NumericalTerm
-	:
-		Identifier
-		| Number
-		| ArrayAccess
-		| SelfVariableAccess
-		| SelfMethodAccess
-		| ArrayLength
-		| MethodCall
-		| ClassInstantiationAndCall
+		LogicalExpression | String | BooleanValue | ClassInstantiation
 	;
 
 LogicalExpression
 	:
-		UnaryLogicalOperators LogicalAtomExpression HalfLogicalExpression LogicalExpressionPrime 
+		(UnaryLogicalOperators + UnaryArithmaticalOperators) LogicalAtomExpression HalfLogicalExpression LogicalExpressionPrime 
 		| LParentheses LogicalExpression RParentheses LogicalExpressionPrime
-		| MatheticalExpression (ComparisonOperators | BinaryLogicalOperators) LogicalAtomExpression HalfLogicalExpression LogicalExpressionPrime
-		| LogicalTerm (ComparisonOperators | BinaryLogicalOperators) LogicalAtomExpression HalfLogicalExpression LogicalExpressionPrime
+		| LogicalTerm AnyBinaryOperator LogicalAtomExpression HalfLogicalExpression LogicalExpressionPrime
 	;
 
-HalfLogicalExpression 
+fragment HalfLogicalExpression 
 	:
-		((ComparisonOperators | BinaryLogicalOperators) LogicalAtomExpression)*
+		( AnyBinaryOperator LogicalAtomExpression)*
 	;
 
-LogicalExpressionPrime
+fragment LogicalExpressionPrime
 	:
-		((ComparisonOperators | BinaryLogicalOperators) LogicalAtomExpression HalfLogicalExpression LogicalExpressionPrime
-		|  
+		AnyBinaryOperator LogicalAtomExpression HalfLogicalExpression LogicalExpressionPrime
+		| 
 	;
 
 LogicalAtomExpression
 	:
 		LogicalExpression
 		| LogicalTerm
-		| MatheticalExpression
+	;
+
+AnyBinaryOperator
+	:
+		ComparisonOperators | BinaryLogicalOperators | BinaryArithmaticalOperatorsPriorityOne | BinaryArithmaticalOperatorsPriorityTwo
 	;
 
 LogicalTerm
@@ -164,7 +131,7 @@ SelfVariableAccess
 
 SelfMethodAccess
 	:
-		THIS DOT Identifier LParentheses Arguments RParentheses
+		THIS DOT Identifier (PassingArgument | )
 	;
 
 ArrayLength
@@ -179,12 +146,12 @@ String
 
 VariableDeclaration
 	:
-		VAR Identifier COLON (TYPE | 'int' LSquareBrackets RSquareBrackets) Delimeter
+		VAR Identifier COLON (TYPE | 'int' LSquareBrackets RSquareBrackets) Delimiter
 	;
 
-ExtendClause
+fragment ExtendClause
 	:
-		EXTENDS identifier
+		EXTENDS Identifier
 		|  
 	;
 
@@ -228,9 +195,14 @@ THEN
 		'then'
 	;
 
-THIS
+fragment THIS
 	:
 		'this'
+	;
+
+WHILE
+	:
+		'while'
 	;
 
 LENGTH
@@ -333,7 +305,7 @@ COMMA
 
 DOT
 	:
-		'.'
+		'.' -> skip
 	;
 
 BinaryArithmaticalOperatorsPriorityOne
@@ -386,6 +358,7 @@ AssignmentOperator
 Number
 	:
 		[1-9][0-9]*
+		| '0'
 	;
 
 Identifier
@@ -398,17 +371,27 @@ Comment
 		'#' Sentense
 	;
 
-StringSentence
+fragment StringSentence
 	:
-		[a-zA-Z0-9!@$%^&*(){}[]\/?,.]*
+		[a-zA-Z_0-9]*
 	;
 
-Sentense
+fragment Sentense
 	:
-		[a-zA-Z0-9!@$%^&*(){}[]\/?,.""'']*
+		[a-zA-Z_0-9%]*
+	;
+
+Dollor
+	:
+		'$'
+	;
+
+Underscore
+	:
+		'_'
 	;
 
 WhiteSpace
 	:
-		[ \t\r]
+		[\n\t\r ]+ -> skip
 	;

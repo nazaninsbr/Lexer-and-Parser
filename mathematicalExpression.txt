@@ -1,0 +1,34 @@
+MatheticalExpression 
+	:
+		MultiplyExpression
+        ( BinaryArithmaticalOperatorsPriorityTwo MultiplyExpression )*
+	;
+
+MultiplyExpression
+	:
+		AtomExpression
+        ( BinaryArithmaticalOperatorsPriorityOne AtomExpression )*
+    ;
+
+AtomExpression
+	:
+		MathematicalTerm
+		| (UnaryArithmaticalOperators |  ) LParentheses MatheticalExpression RParentheses 
+	;
+
+MathematicalTerm
+	:
+		(UnaryArithmaticalOperators |  ) NumericalTerm
+	;
+
+NumericalTerm
+	:
+		Identifier
+		| Number
+		| ArrayAccess
+		| SelfVariableAccess
+		| SelfMethodAccess
+		| ArrayLength
+		| MethodCall
+		| ClassInstantiationAndCall
+	;

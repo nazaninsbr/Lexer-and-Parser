@@ -9,6 +9,10 @@ MainStatement
 		| Statement
 	;
 
+Sentense
+	:
+		['a'..'z' | 'A'..'Z' | '0'..'9' | COLON | '%' | LParentheses | RParentheses | LBrackets | RBrackets | LSquareBrackets | RSquareBrackets | '#' | Delimiter | '&' | '^' | BinaryArithmaticalOperatorsPriorityTwo | '@' | COMMA | BinaryLogicalOperators | UnaryLogicalOperators | Dollor | BinaryArithmaticalOperatorsPriorityOne | Underscore | AssignmentOperator | ComparisonOperators | '~' | Quotation]*
+	;
 
 MainPrintStatement
 	:
