@@ -12,17 +12,12 @@ MainClass
 
 ClassDefinition
 	:
-		CLASS Identifier ExtendClause LBrackets VariableDeclaration (Method)* RBrackets
+		CLASS Identifier ExtendClause LBrackets (VariableDeclaration)* (Method)* RBrackets
 	;
 
 MainMethod
 	:
-		DEF 'main' LParentheses RParentheses COLON 'int' LBrackets MainBody RBrackets
-	;
-
-MainBody
-	:
-
+		DEF 'main' LParentheses RParentheses COLON 'int' LBrackets MethodBody RBrackets
 	;
 
 Method
@@ -32,8 +27,39 @@ Method
 
 MethodBody
 	:
-
+		(VariableDeclaration)* (Statement)* ReturnExpression
 	;	
+
+Statement
+	:
+		Assignment | Conditional | Loop | PrintStatement 
+	;
+
+Assignment 
+	:
+		( Identifier | THIS DOT Identifier ) AssignmentOperator Expression Delimeter
+	;
+
+Conditional
+	:
+		IF LParentheses Condition RParentheses THEN Statement 
+		| IF LParentheses Condition RParentheses THEN Statement ELSE Statement
+	;
+
+Condition
+	:
+		Expression
+	;
+
+Loop
+	:
+		WHILE LParentheses Condition RParentheses LBrackets (Statement)* RBrackets
+	;
+
+PrintStatement
+	:
+		PrintCommand LParentheses Expression RParentheses
+	;
 
 Arguments
 	:
@@ -48,12 +74,12 @@ ReturnExpression
 
 ReturnValue
 	:
-		RETURN (Expression | ++Expression) Delimiter
+		Expression
 	;
 
 Expression
 	:
-		MatheticalExpression | LogicalExpression | String
+		MatheticalExpression | LogicalExpression | String | BooleanValue | ClassInstantiation
 	;
 
 MatheticalExpression 
@@ -71,7 +97,8 @@ MultiplyExpression
 AtomExpression
 	:
 		MathematicalTerm
-		| (UnaryArithmaticalOperators |  ) LParentheses MatheticalExpression RParentheses
+		| (UnaryArithmaticalOperators |  ) LParentheses MatheticalExpression RParentheses 
+		| LogicalExpression
 	;
 
 MathematicalTerm
@@ -86,40 +113,49 @@ NumericalTerm
 		| ArrayAccess
 		| SelfVariableAccess
 		| SelfMethodAccess
+		| ArrayLength
+		| MethodCall
+		| ClassInstantiationAndCall
 	;
 
 LogicalExpression
 	:
-		( UnaryLogicalOperators Expression1 | Expression1 BinaryLogicalOperators Expression1 ) ( UnaryLogicalOperators Expression1 |  BinaryLogicalOperators Expression1 )*
+		UnaryLogicalOperators LogicalAtomExpression HalfLogicalExpression LogicalExpressionPrime 
+		| LParentheses LogicalExpression RParentheses LogicalExpressionPrime
+		| MatheticalExpression (ComparisonOperators | BinaryLogicalOperators) LogicalAtomExpression HalfLogicalExpression LogicalExpressionPrime
+		| LogicalTerm (ComparisonOperators | BinaryLogicalOperators) LogicalAtomExpression HalfLogicalExpression LogicalExpressionPrime
 	;
 
-Expression1
+HalfLogicalExpression 
 	:
-		LogicalAtomExpression
-		| '(' LogicalExpression ')'
+		((ComparisonOperators | BinaryLogicalOperators) LogicalAtomExpression)*
+	;
+
+LogicalExpressionPrime
+	:
+		((ComparisonOperators | BinaryLogicalOperators) LogicalAtomExpression HalfLogicalExpression LogicalExpressionPrime
+		|  
 	;
 
 LogicalAtomExpression
 	:
-		Identifier
-		| Number
-		| BooleanValue
-		| ArrayAccess
-		| String
-		| SelfVariableAccess
-		| SelfMethodAccess
+		LogicalExpression
+		| LogicalTerm
+		| MatheticalExpression
+	;
 
-Term
+LogicalTerm
 	:
 		Identifier
 		| Number
 		| BooleanValue
 		| ArrayAccess
-		| String
 		| SelfVariableAccess
 		| SelfMethodAccess
+		| ArrayLength
+		| MethodCall
+		| ClassInstantiationAndCall
 	;
-
 
 SelfVariableAccess
 	:
@@ -131,6 +167,11 @@ SelfMethodAccess
 		THIS DOT Identifier LParentheses Arguments RParentheses
 	;
 
+ArrayLength
+	:
+		Identifier DOT LENGTH
+	;
+
 String
 	:
 		Quotation StringSentence Quotation
@@ -138,7 +179,7 @@ String
 
 VariableDeclaration
 	:
-
+		VAR Identifier COLON (TYPE | 'int' LSquareBrackets RSquareBrackets) Delimeter
 	;
 
 ExtendClause
@@ -192,6 +233,11 @@ THIS
 		'this'
 	;
 
+LENGTH
+	:
+		'length'
+	;
+
 TYPE
 	:
 		 'string'
@@ -202,6 +248,26 @@ TYPE
 ArrayDefinition
 	:
 		'new int' LSquareBrackets Number RSquareBrackets 
+	;
+
+ClassInstantiation
+	:
+		'new' Identifier LParentheses RParentheses 
+	;
+
+ClassInstantiationAndCall
+	:
+		ClassInstantiation DOT Identifier (PassingArgument | LParentheses RParentheses)
+	;
+
+MethodCall
+	:
+		 Identifier DOT Identifier (PassingArgument | LParentheses RParentheses)
+	;
+
+PassingArgument
+	:
+		LParentheses (Expression COMMA)* Expression RParentheses
 	;
 
 ArrayAccess
@@ -294,6 +360,11 @@ BinaryLogicalOperators
 		| '||'
 	;
 
+PrintCommand
+	:
+		'writeln'
+	;
+
 UnaryLogicalOperators
 	:
 		'!'
@@ -305,6 +376,11 @@ ComparisonOperators
 		| '>'
 		| '=='
 		| '<>'
+	;
+
+AssignmentOperator
+	:
+		'='
 	;
 
 Number

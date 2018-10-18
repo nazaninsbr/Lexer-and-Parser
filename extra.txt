@@ -1,0 +1,104 @@
+MainBody
+	:
+		(VariableDeclaration)* (MainStatement)* ReturnExpression
+	;
+
+MainStatement
+	:
+		AtomicMainStatement
+		| Statement
+	;
+
+
+MainPrintStatement
+	:
+		PrintStatement
+		| PrintCommand LParentheses Expression RParentheses
+	;
+
+AtomicMainStatement
+	:
+		( ClassInstantiation
+		| Identifier AssignmentOperator ClassInstantiation
+		| MainPrintStatement
+		) Delimeter
+
+	;
+
+MainExpression
+	:
+		MainMatheticalExpression | MainLogicalExpression | String | BooleanValue
+	;
+
+MainMatheticalExpression 
+	:
+		MainMultiplyExpression
+        ( BinaryArithmaticalOperatorsPriorityTwo MainMultiplyExpression )*
+	;
+
+MainMultiplyExpression
+	:
+		MainAtomExpression
+        ( BinaryArithmaticalOperatorsPriorityOne MainAtomExpression )*
+    ;
+
+MainAtomExpression
+	:
+		MathematicalTerm
+		| (UnaryArithmaticalOperators |  ) LParentheses MainMatheticalExpression RParentheses 
+		| MainLogicalExpression
+	;
+
+MainMathematicalTerm
+	:
+		(UnaryArithmaticalOperators |  ) MainNumericalTerm
+	;
+
+MainNumericalTerm
+	:
+		Identifier
+		| Number
+		| ArrayAccess
+		| SelfVariableAccess
+		| SelfMethodAccess
+		| ArrayLength
+		| ClassInstantiation
+	;
+
+MainLogicalExpression
+	:
+		UnaryLogicalOperators MainLogicalAtomExpression MainHalfLogicalExpression MainLogicalExpressionPrime 
+		| LParentheses LogicalExpression RParentheses MainLogicalExpressionPrime
+		| MainMatheticalExpression (ComparisonOperators | BinaryLogicalOperators) MainLogicalAtomExpression MainHalfLogicalExpression MainLogicalExpressionPrime
+		| MainLogicalTerm (ComparisonOperators | BinaryLogicalOperators) MainLogicalAtomExpression MainHalfLogicalExpression MainLogicalExpressionPrime
+	;
+
+MainHalfLogicalExpression 
+	:
+		((ComparisonOperators | BinaryLogicalOperators) MainLogicalAtomExpression)*
+	;
+
+MainLogicalExpressionPrime
+	:
+		((ComparisonOperators | BinaryLogicalOperators) MainLogicalAtomExpression MainHalfLogicalExpression MainLogicalExpressionPrime
+		|  
+	;
+
+MainLogicalAtomExpression
+	:
+		MainLogicalExpression
+		| MainLogicalTerm
+		| MatheticalExpression
+	;
+
+MainLogicalTerm
+	:
+		Identifier
+		| Number
+		| BooleanValue
+		| ArrayAccess
+		| SelfVariableAccess
+		| SelfMethodAccess
+		| ArrayLength
+		| ClassInstantiation
+	;
