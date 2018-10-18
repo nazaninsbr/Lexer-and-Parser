@@ -84,7 +84,7 @@ expression
 
 logicalexpression
 	:
-		(UnaryLogicalOperators + UnaryArithmaticalOperators) logicalAtomexpression halflogicalexpression logicalexpressionPrime 
+		(UnaryLogicalOperators | SubtractionOperators) logicalAtomexpression halflogicalexpression logicalexpressionPrime 
 		| LParentheses logicalexpression RParentheses logicalexpressionPrime
 		| logicalTerm anyBinaryOperator logicalAtomexpression halflogicalexpression logicalexpressionPrime
 	;
@@ -108,7 +108,7 @@ logicalAtomexpression
 
 anyBinaryOperator
 	:
-		ComparisonOperators | BinaryLogicalOperators | BinaryArithmaticalOperatorsPriorityOne | BinaryArithmaticalOperatorsPriorityTwo
+		ComparisonOperators | BinaryLogicalOperators | BinaryArithmaticalOperatorsPriorityOne | AdditionArithmaticalOperatorPriorityTwo | SubtractionOperators
 	;
 
 logicalTerm
@@ -141,7 +141,7 @@ arrayLength
 
 string
 	:
-		Quotation StringSentence Quotation
+		Quotation (StringSentence)* Quotation
 	;
 
 variableDeclaration
@@ -312,14 +312,13 @@ BinaryArithmaticalOperatorsPriorityOne
 		| '/'
 	;	
 
-BinaryArithmaticalOperatorsPriorityTwo
+AdditionArithmaticalOperatorPriorityTwo
 	:	
 		'+'
-		| '-'
 	;
 
 
-UnaryArithmaticalOperators
+SubtractionOperators
 	:
 		'-'
 	;
