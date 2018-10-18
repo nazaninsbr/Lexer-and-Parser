@@ -7,12 +7,12 @@ program
 
 mainClass
 	:
-		CLASS Identifier LBrackets mainMethod RBrackets
+		'class' Identifier LBrackets mainMethod RBrackets
 	;
 
 classDefinition
 	:
-		CLASS Identifier extendClause LBrackets (variableDeclaration)* (method)* RBrackets
+		'class' Identifier extendClause LBrackets (variableDeclaration)* (method)* RBrackets
 	;
 
 mainMethod
@@ -32,7 +32,7 @@ methodBody
 
 Statement
 	:
-		Assignment | Conditional | Loop | PrintStatement | MethodCall
+		Assignment | Conditional | Loop | PrintStatement | methodCall
 	;
 
 Assignment 
@@ -116,7 +116,7 @@ LogicalTerm
 		Identifier
 		| Number
 		| BooleanValue
-		| ArrayAccess
+		| arrayAccess
 		| SelfVariableAccess
 		| SelfMethodAccess
 		| ArrayLength
@@ -149,11 +149,45 @@ variableDeclaration
 		VAR Identifier COLON (TYPE | 'int' LSquareBrackets RSquareBrackets) Delimiter
 	;
 
-fragment ExtendClause
+extendClause
 	:
 		EXTENDS Identifier
 		|  
 	;
+
+ArrayDefinition
+	:
+		'new int' LSquareBrackets Number RSquareBrackets 
+	;
+
+ClassInstantiation
+	:
+		'new' Identifier LParentheses RParentheses 
+	;
+
+ClassInstantiationAndCall
+	:
+		ClassInstantiation DOT Identifier (PassingArgument | LParentheses RParentheses)
+	;
+
+methodCall
+	:
+		 Identifier DOT Identifier (PassingArgument | LParentheses RParentheses)
+	;
+
+PassingArgument
+	:
+		LParentheses (Expression COMMA)* Expression RParentheses
+	;
+
+arrayAccess
+	:
+		Identifier LSquareBrackets Number RSquareBrackets
+	;
+
+
+// lexer rules are down here and parser rules are up there
+
 
 EXTENDS
 	:
@@ -195,7 +229,7 @@ THEN
 		'then'
 	;
 
-fragment THIS
+THIS
 	:
 		'this'
 	;
@@ -217,35 +251,6 @@ TYPE
 		| 'boolean'
 	;
 
-ArrayDefinition
-	:
-		'new int' LSquareBrackets Number RSquareBrackets 
-	;
-
-ClassInstantiation
-	:
-		'new' Identifier LParentheses RParentheses 
-	;
-
-ClassInstantiationAndCall
-	:
-		ClassInstantiation DOT Identifier (PassingArgument | LParentheses RParentheses)
-	;
-
-MethodCall
-	:
-		 Identifier DOT Identifier (PassingArgument | LParentheses RParentheses)
-	;
-
-PassingArgument
-	:
-		LParentheses (Expression COMMA)* Expression RParentheses
-	;
-
-ArrayAccess
-	:
-		Identifier LSquareBrackets Number RSquareBrackets
-	;
 
 BooleanValue
 	:
@@ -371,12 +376,12 @@ Comment
 		'#' Sentense
 	;
 
-fragment StringSentence
+StringSentence
 	:
 		[a-zA-Z_0-9]*
 	;
 
-fragment Sentense
+Sentense
 	:
 		[a-zA-Z_0-9%]*
 	;
