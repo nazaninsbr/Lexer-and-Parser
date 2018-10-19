@@ -141,7 +141,13 @@ arrayLength
 
 string
 	:
-		Quotation (StringSentence)* Quotation
+		Quotation (stringSentence)* Quotation
+	;
+
+stringSentence
+	:
+		Identifier | Number | LParentheses | RParentheses | LBrackets | RBrackets | LSquareBrackets | RSquareBrackets | Quotation | Delimiter | COLON | COMMA |
+		IF | ELSE | WHILE | THEN | BinaryArithmaticalOperatorsPriorityOne | AdditionArithmaticalOperatorPriorityTwo | SubtractionOperators |  BinaryLogicalOperators | PrintCommand | ComparisonOperators | AssignmentOperator | Dollor | Underscore
 	;
 
 variableDeclaration
@@ -366,11 +372,6 @@ Identifier
 Comment
 	:
 		'#' Sentense
-	;
-
-StringSentence
-	:
-		[a-zA-Z_0-9]+
 	;
 
 Sentense
