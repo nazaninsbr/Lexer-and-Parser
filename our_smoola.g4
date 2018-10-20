@@ -53,7 +53,7 @@ condition
 
 loop
 	:
-		WHILE LParentheses condition RParentheses LBrackets (statement)* RBrackets
+		WHILE LParentheses condition RParentheses LBrackets (statement Delimiter)* RBrackets
 	;
 
 printstatement
