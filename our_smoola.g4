@@ -37,13 +37,13 @@ statement
 
 assignment 
 	:
-		( Identifier | THIS DOT Identifier ) AssignmentOperator expression Delimiter
+		( Identifier | THIS DOT Identifier | arrayAccess) AssignmentOperator (expression | arrayDefinition) Delimiter
 	;
 
 conditional
 	:
 		IF LParentheses condition RParentheses THEN statement 
-		| IF LParentheses condition RParentheses THEN statement ELSE statement
+		| IF LParentheses condition RParentheses THEN statement ELSE (LBrackets statement RBrackets | statement )
 	;
 
 condition
@@ -53,7 +53,7 @@ condition
 
 loop
 	:
-		WHILE LParentheses condition RParentheses LBrackets (statement Delimiter)* RBrackets
+		WHILE LParentheses condition RParentheses LBrackets (statement)* RBrackets
 	;
 
 printstatement
@@ -190,7 +190,7 @@ passingArgument
 
 arrayAccess
 	:
-		Identifier LSquareBrackets Number RSquareBrackets
+		Identifier LSquareBrackets (Number| Identifier) RSquareBrackets
 	;
 
 type
