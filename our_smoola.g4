@@ -32,12 +32,19 @@ methodBody
 
 statement
 	:
-		assignment | conditional | loop | printstatement | methodCall
+		statementwithoutDelimiter | statementwithDelimiter Delimiter 
 	;
-
+statementwithoutDelimiter
+	:
+		loop | conditional 
+	;
+statementwithDelimiter
+	:
+		assignment | printstatement | methodCall | classInstantiationAndCall
+	;
 assignment 
 	:
-		( Identifier | THIS DOT Identifier | arrayAccess) AssignmentOperator (expression | arrayDefinition) Delimiter
+		( Identifier | THIS DOT Identifier | arrayAccess) AssignmentOperator (expression | arrayDefinition)
 	;
 
 conditional
@@ -79,7 +86,7 @@ returnValue
 
 expression
 	:
-		logicalexpression | string | BooleanValue | classInstantiation | logicalTerm
+		logicalexpression | string | BooleanValue | logicalTerm | classInstantiation 
 	;
 
 logicalexpression
@@ -149,7 +156,6 @@ stringSentence
 		Identifier | Number | LParentheses | RParentheses | LBrackets | RBrackets | LSquareBrackets | RSquareBrackets | Quotation | Delimiter | COLON | COMMA |
 		IF | ELSE | WHILE | THEN | BinaryArithmaticalOperatorsPriorityOne | AdditionArithmaticalOperatorPriorityTwo | SubtractionOperators |  BinaryLogicalOperators | PrintCommand | ComparisonOperators | AssignmentOperator | Dollor | Underscore
 	;
-
 variableDeclaration
 	:
 		VAR Identifier COLON type Delimiter
@@ -165,12 +171,12 @@ extendClause
 
 arrayDefinition
 	:
-		'new int' LSquareBrackets Number RSquareBrackets 
+		NEW 'int' LSquareBrackets Number RSquareBrackets 
 	;
 
 classInstantiation
 	:
-		'new' Identifier LParentheses RParentheses 
+		NEW Identifier LParentheses RParentheses | LParentheses classInstantiation RParentheses
 	;
 
 classInstantiationAndCall
@@ -363,22 +369,14 @@ Number
 		[1-9][0-9]*
 		| '0'
 	;
-
+NEW
+	:
+		'new'
+	;
 Identifier
 	:
 		[a-zA-Z_][a-zA-Z_0-9]*
 	;
-
-Comment
-	:
-		'#' Sentense
-	;
-
-Sentense
-	:
-		[a-zA-Z_0-9%]+
-	;
-
 Dollor
 	:
 		'$'
@@ -396,5 +394,9 @@ WhiteSpace
 
 DOT
 	:
-		'.' -> skip
+		'.'
 	;
+
+LINE_COMMENT
+    :   '#' ~[\r\n]* -> skip
+    ;
