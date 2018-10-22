@@ -153,7 +153,7 @@ string
 
 stringSentence
 	:
-		Identifier | Number | LParentheses | RParentheses | LBrackets | RBrackets | LSquareBrackets | RSquareBrackets |  Delimiter | COLON | COMMA | IF | ELSE | WHILE | THEN | BinaryArithmaticalOperatorsPriorityOne | AdditionArithmaticalOperatorPriorityTwo | SubtractionOperators |  BinaryLogicalOperators | PrintCommand | ComparisonOperators | AssignmentOperator | Dollor | Underscore | UnaryLogicalOperators | QMARK | type | EXTENDS | DEF | VAR | RETURN | CLASS | THIS | LENGTH | BooleanValue | AT | PERSENT | HAT | TILDA | BACKTICK | BACKSLASH
+		Identifier | Number | LParentheses | RParentheses | LBrackets | RBrackets | LSquareBrackets | RSquareBrackets |  Delimiter | COLON | COMMA | IF | ELSE | WHILE | THEN | BinaryArithmaticalOperatorsPriorityOne | AdditionArithmaticalOperatorPriorityTwo | SubtractionOperators |  BinaryLogicalOperators | PrintCommand | ComparisonOperators | AssignmentOperator | Dollor | Underscore | UnaryLogicalOperators | QMARK | type | EXTENDS | DEF | VAR | RETURN | CLASS | THIS | LENGTH | BooleanValue | AT | PERSENT | HAT | TILDA | BACKTICK
 	;
 
 variableDeclaration
@@ -407,10 +407,7 @@ BACKTICK
 	:
 		'`'
 	;
-BACKSLASH
-	:
-		'\'
-	;
+
 Underscore
 	:
 		'_'
