@@ -1,0 +1,32 @@
+class Test {
+	def main() : int {
+		writeln(SecondMain().main());
+		return 0;
+	}
+}
+
+class SecondMain {
+	var s : Rectangle;
+
+	def main(): int {
+		s = new Rectangle; 
+		s.constructor(10, 5);
+		return s.area();
+	}
+}
+
+class Rectangle {
+	var x: int;
+	var y : int; 
+	var name : string;
+
+	def constructor(x: int, y:int): int {
+		this.x = x;
+		this.y = y;
+		return 0;
+	}
+
+	def area(): int {
+		return x*y;
+	}
+}
