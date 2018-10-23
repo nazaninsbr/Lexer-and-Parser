@@ -17,7 +17,7 @@ classDefinition
 
 mainMethod
 	:
-		DEF 'main' LParentheses RParentheses COLON 'int' LBrackets methodBody RBrackets
+		DEF Identifier LParentheses RParentheses COLON 'int' LBrackets methodBody RBrackets
 	;
 
 method
@@ -172,7 +172,6 @@ arrayDefinition
 classInstantiation
 	:
 		NEW Identifier LParentheses RParentheses 
-		| Identifier LParentheses RParentheses
 		| LParentheses classInstantiation RParentheses
 	;
 

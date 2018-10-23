@@ -1,6 +1,6 @@
 class Test {
 	def main() : int {
-		writeln(SecondMain().main());
+		writeln(new SecondMain().main());
 		return 0;
 	}
 }
@@ -9,8 +9,9 @@ class SecondMain {
 	var s : Rectangle;
 
 	def main(): int {
-		s = new Rectangle; 
-		s.constructor(10, 5);
+		var x: int;
+		s = new Rectangle(); 
+		x = s.constructor(10, 5);
 		return s.area();
 	}
 }
