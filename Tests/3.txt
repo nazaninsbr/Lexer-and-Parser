@@ -5,9 +5,10 @@ class Test {
 	}
 }
 
-class Book {
+class Book extends Library {
 	var j : int [];
 	var k : boolean; 
+	var i : Rectangle; 
 
 	def x (f1: int) : int {
 		if (3||true) then

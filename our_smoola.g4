@@ -7,12 +7,12 @@ program
 
 mainClass
 	:
-		CLASS Identifier LBrackets mainMethod RBrackets
+		CLASS className = Identifier LBrackets mainMethod RBrackets { System.out.print("ClassDec:"); System.out.println($className.text); }
 	;
 
 classDefinition
 	:
-		CLASS Identifier extendClause LBrackets (variableDeclaration)* (method)* RBrackets
+		CLASS className = Identifier (EXTENDS parentClass = Identifier | ) LBrackets (variableDeclaration)* (method)* RBrackets {  if($parentClass.text != null) { System.out.print("ClassDec:"); System.out.print($className.text); System.out.print(','); System.out.println($parentClass.text); } else {System.out.print("ClassDec:"); System.out.println($className.text);}} 
 	;
 
 mainMethod
@@ -153,14 +153,8 @@ string
 
 variableDeclaration
 	:
-		VAR Identifier COLON (type | Identifier) Delimiter
-		| VAR Identifier COLON 'int' LSquareBrackets RSquareBrackets Delimiter
-	;
-
-extendClause
-	:
-		EXTENDS Identifier
-		|  
+		VAR varName = Identifier COLON (varType = type | varTypeName = Identifier) Delimiter {System.out.print("VarDec:"); System.out.print($varName.text); System.out.print(","); if($varType.text != null) {System.out.println($varType.text);} else {System.out.println($varTypeName.text);} }
+		| VAR varName = Identifier COLON 'int' LSquareBrackets RSquareBrackets Delimiter {System.out.print("VarDec:"); System.out.print($varName.text); System.out.print(","); System.out.println("int[]");}
 	;
 
 
@@ -229,12 +223,12 @@ CLASS
 
 IF
 	:
-		'if'
+		'if' { System.out.println("Conditional:if"); }
 	;
 
 ELSE
 	:
-		'else'
+		'else' { System.out.println("Conditional:else"); }
 	;
 
 THEN
@@ -249,7 +243,7 @@ THIS
 
 WHILE
 	:
-		'while'
+		'while' { System.out.println("Loop:while"); }
 	;
 
 LENGTH
@@ -321,7 +315,7 @@ BinaryArithmaticalOperatorsPriorityOne
 
 AdditionArithmaticalOperatorPriorityTwo
 	:	
-		'+'
+		'+' { System.out.println("Operator:+"); }
 	;
 
 
