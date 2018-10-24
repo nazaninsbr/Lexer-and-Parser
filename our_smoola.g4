@@ -12,7 +12,7 @@ mainClass
 
 classDefinition
 	:
-		CLASS className = Identifier (EXTENDS parentClass = Identifier | ) LBrackets (variableDeclaration)* (method)* RBrackets {  if($parentClass.text != null) { System.out.print("ClassDec:"); System.out.print($className.text); System.out.print(','); System.out.println($parentClass.text); } else {System.out.print("ClassDec:"); System.out.println($className.text);}} 
+		CLASS className = Identifier (EXTENDS parentClass = Identifier | ) {  if($parentClass.text != null) { System.out.print("ClassDec:"); System.out.print($className.text); System.out.print(','); System.out.println($parentClass.text); } else {System.out.print("ClassDec:"); System.out.println($className.text);}} LBrackets (variableDeclaration)* (method)* RBrackets 
 	;
 
 mainMethod
@@ -49,8 +49,8 @@ assignment
 
 conditional
 	:
-		op = IF LParentheses condition RParentheses THEN statement {System.out.println("Conditional:"+$op.getText());}
-		| op1 = IF LParentheses condition RParentheses op2 = THEN statement ELSE (LBrackets statement RBrackets | statement ) {System.out.println("Conditional:"+$op1.getText()); System.out.println("Conditional:"+$op2.getText());}
+		op = IF {System.out.println("Conditional:"+$op.getText());} LParentheses condition RParentheses THEN statement 
+		| op1 = IF {System.out.println("Conditional:"+$op1.getText());} LParentheses condition RParentheses THEN statement op2 = ELSE {System.out.println("Conditional:"+$op2.getText());} (LBrackets statement RBrackets | statement ) 
 	;
 
 condition
@@ -91,37 +91,37 @@ expression
 
 logicalOrExpression
 	:
-		logicalAndExpression (op = LOGICALOR logicalAndExpression {System.out.println("Operator:"+$op.getText());})*
+		logicalAndExpression (op = LOGICALOR  {System.out.println("Operator:"+$op.getText());} logicalAndExpression)*
 	;
 
 logicalAndExpression 
 	:
-		comparingExpression (op = LOGICALAND comparingExpression {System.out.println("Operator:"+$op.getText());})*
+		comparingExpression (op = LOGICALAND  {System.out.println("Operator:"+$op.getText());} comparingExpression)*
 	;
 
 comparingExpression
 	:
-		relationExpression (op = ComparisonOperators relationExpression {System.out.println("Operator:"+$op.getText());} )*
+		relationExpression (op = ComparisonOperators  {System.out.println("Operator:"+$op.getText());} relationExpression)*
 	;
 
 relationExpression
 	:
-		addSubtractExpression (op = RelationOperators addSubtractExpression {System.out.println("Operator:"+$op.getText());} )*
+		addSubtractExpression (op = RelationOperators  {System.out.println("Operator:"+$op.getText());} addSubtractExpression)*
 	;
 
 addSubtractExpression
 	:
-		multiplyExpression (op = (MINUS | PLUS) multiplyExpression {System.out.println("Operator:"+$op.getText());})*
+		multiplyExpression (op = (MINUS | PLUS)  {System.out.println("Operator:"+$op.getText());} multiplyExpression)*
 	;
 
 multiplyExpression
 	:
-		signedAtomExpression (op= (MULT | DIVIDE) signedAtomExpression {System.out.println("Operator:"+$op.getText());})*
+		signedAtomExpression (op= (MULT | DIVIDE)  {System.out.println("Operator:"+$op.getText());} signedAtomExpression)*
 	;
 
 signedAtomExpression
 	:
-		op = (UnaryLogicalOperators | MINUS ) logicalTerm {System.out.println("Operator:"+$op.getText());}
+		op = (UnaryLogicalOperators | MINUS )  {System.out.println("Operator:"+$op.getText());} logicalTerm
 		| logicalTerm 
 	;
 
