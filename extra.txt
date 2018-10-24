@@ -107,7 +107,7 @@ MainLogicalTerm
 		| ClassInstantiation
 	;
 
-java org.antlr.v4.gui.TestRig our_smoola program < ./Tests/1.txt
+java org.antlr.v4.gui.TestRig our_smoola program -gui < ./Tests/1.txt
 java org.antlr.v4.gui.TestRig our_smoola program -gui < ./Tests/2.txt
 java org.antlr.v4.gui.TestRig our_smoola program -gui < ./Tests/3.txt
 java org.antlr.v4.gui.TestRig our_smoola program -gui < ./Tests/4.txt
@@ -115,3 +115,47 @@ java org.antlr.v4.gui.TestRig our_smoola program -gui < ./Tests/5.txt
 java org.antlr.v4.gui.TestRig our_smoola program -gui < ./Tests/6.txt
 java org.antlr.v4.gui.TestRig our_smoola program -gui < ./Tests/7.txt
 java org.antlr.v4.gui.TestRig our_smoola program -gui < ./Tests/8.txt
+java org.antlr.v4.gui.TestRig our_smoola program -gui < ./Tests/9.txt
+
+
+logicalexpression
+	:
+		(UnaryLogicalOperators | SubtractionOperators) logicalAtomexpression halflogicalexpression logicalexpressionPrime 
+		| LParentheses logicalexpression RParentheses logicalexpressionPrime
+		| logicalTerm anyBinaryOperator logicalAtomexpression halflogicalexpression logicalexpressionPrime
+	;
+
+halflogicalexpression 
+	:
+		( anyBinaryOperator logicalAtomexpression)*
+	;
+
+logicalexpressionPrime
+	:
+		anyBinaryOperator logicalAtomexpression halflogicalexpression logicalexpressionPrime
+		| 
+	;
+
+logicalAtomexpression
+	:
+		logicalexpression
+		| logicalTerm
+	;
+
+anyBinaryOperator
+	:
+		ComparisonOperators | BinaryLogicalOperators | BinaryArithmaticalOperatorsPriorityOne | AdditionArithmaticalOperatorPriorityTwo | SubtractionOperators
+	;
+
+logicalTerm
+	:
+		Identifier
+		| Number
+		| BooleanValue
+		| arrayAccess
+		| selfVariableAccess
+		| selfMethodAccess
+		| arrayLength
+		| methodCall
+		| classInstantiationAndCall
+	;

@@ -49,18 +49,18 @@ assignment
 
 conditional
 	:
-		IF LParentheses condition RParentheses THEN statement 
-		| IF LParentheses condition RParentheses THEN statement ELSE (LBrackets statement RBrackets | statement )
+		op = IF LParentheses condition RParentheses THEN statement {System.out.println("Conditional:"+$op.getText());}
+		| op1 = IF LParentheses condition RParentheses op2 = THEN statement ELSE (LBrackets statement RBrackets | statement ) {System.out.println("Conditional:"+$op1.getText()); System.out.println("Conditional:"+$op2.getText());}
 	;
 
 condition
 	:
-		logicalexpression | BooleanValue
+		logicalOrExpression | BooleanValue
 	;
 
 loop
 	:
-		WHILE LParentheses condition RParentheses LBrackets (statement)* RBrackets
+		op = WHILE LParentheses condition RParentheses LBrackets (statement)* RBrackets {System.out.println("Conditional:"+$op.getText());}
 	;
 
 printstatement
@@ -86,41 +86,49 @@ returnValue
 
 expression
 	:
-		logicalexpression | string | BooleanValue | logicalTerm | classInstantiation 
+		logicalOrExpression | string | classInstantiation 
 	;
 
-logicalexpression
+logicalOrExpression
 	:
-		(UnaryLogicalOperators | SubtractionOperators) logicalAtomexpression halflogicalexpression logicalexpressionPrime 
-		| LParentheses logicalexpression RParentheses logicalexpressionPrime
-		| logicalTerm anyBinaryOperator logicalAtomexpression halflogicalexpression logicalexpressionPrime
+		logicalAndExpression (op = LOGICALOR logicalAndExpression {System.out.println("Operator:"+$op.getText());})*
 	;
 
-halflogicalexpression 
+logicalAndExpression 
 	:
-		( anyBinaryOperator logicalAtomexpression)*
+		comparingExpression (op = LOGICALAND comparingExpression {System.out.println("Operator:"+$op.getText());})*
 	;
 
-logicalexpressionPrime
+comparingExpression
 	:
-		anyBinaryOperator logicalAtomexpression halflogicalexpression logicalexpressionPrime
-		| 
+		relationExpression (op = ComparisonOperators relationExpression {System.out.println("Operator:"+$op.getText());} )*
 	;
 
-logicalAtomexpression
+relationExpression
 	:
-		logicalexpression
-		| logicalTerm
+		addSubtractExpression (op = RelationOperators addSubtractExpression {System.out.println("Operator:"+$op.getText());} )*
 	;
 
-anyBinaryOperator
+addSubtractExpression
 	:
-		ComparisonOperators | BinaryLogicalOperators | BinaryArithmaticalOperatorsPriorityOne | AdditionArithmaticalOperatorPriorityTwo | SubtractionOperators
+		multiplyExpression (op = (MINUS | PLUS) multiplyExpression {System.out.println("Operator:"+$op.getText());})*
+	;
+
+multiplyExpression
+	:
+		signedAtomExpression (op= (MULT | DIVIDE) signedAtomExpression {System.out.println("Operator:"+$op.getText());})*
+	;
+
+signedAtomExpression
+	:
+		op = (UnaryLogicalOperators | MINUS ) logicalTerm {System.out.println("Operator:"+$op.getText());}
+		| logicalTerm 
 	;
 
 logicalTerm
 	:
-		Identifier
+		LParentheses logicalOrExpression RParentheses
+		| Identifier
 		| Number
 		| BooleanValue
 		| arrayAccess
@@ -223,12 +231,12 @@ CLASS
 
 IF
 	:
-		'if' { System.out.println("Conditional:if"); }
+		'if'
 	;
 
 ELSE
 	:
-		'else' { System.out.println("Conditional:else"); }
+		'else'
 	;
 
 THEN
@@ -243,7 +251,7 @@ THIS
 
 WHILE
 	:
-		'while' { System.out.println("Loop:while"); }
+		'while'
 	;
 
 LENGTH
@@ -307,27 +315,35 @@ COMMA
 		','
 	;
 
-BinaryArithmaticalOperatorsPriorityOne
+MULT
 	:	
 		'*'
-		| '/'
 	;	
 
-AdditionArithmaticalOperatorPriorityTwo
+DIVIDE
+	:
+ 		'/'
+	;
+
+PLUS
 	:	
-		'+' { System.out.println("Operator:+"); }
+		'+'
 	;
 
 
-SubtractionOperators
+MINUS
 	:
 		'-'
 	;
 
-BinaryLogicalOperators
+LOGICALOR
+	:
+		'||'
+	;
+
+LOGICALAND
 	:
 		'&&'
-		| '||'
 	;
 
 PrintCommand
@@ -342,10 +358,14 @@ UnaryLogicalOperators
 
 ComparisonOperators
 	:
-		'<'
-		| '>'
-		| '=='
+		'=='
 		| '<>'
+	;
+
+RelationOperators
+	:
+		'<' 
+		| '>'
 	;
 
 AssignmentOperator
@@ -414,7 +434,7 @@ WhiteSpace
 
 stringSentence
 	:
-		Identifier | Number | LParentheses | RParentheses | LBrackets | RBrackets | LSquareBrackets | RSquareBrackets |  Delimiter | COLON | COMMA | IF | ELSE | WHILE | THEN | BinaryArithmaticalOperatorsPriorityOne | AdditionArithmaticalOperatorPriorityTwo | SubtractionOperators |  BinaryLogicalOperators | PrintCommand | ComparisonOperators | AssignmentOperator | Dollor | Underscore | UnaryLogicalOperators | QMARK | type | EXTENDS | DEF | VAR | RETURN | CLASS | THIS | LENGTH | BooleanValue | AT | PERSENT | HAT | TILDA | BACKTICK
+		Identifier | Number | LParentheses | RParentheses | LBrackets | RBrackets | LSquareBrackets | RSquareBrackets |  Delimiter | COLON | COMMA | IF | ELSE | WHILE | THEN | MULT | DIVIDE | PLUS | MINUS |  LOGICALOR | LOGICALAND | PrintCommand | ComparisonOperators | RelationOperators | AssignmentOperator | Dollor | Underscore | UnaryLogicalOperators | QMARK | type | EXTENDS | DEF | VAR | RETURN | CLASS | THIS | LENGTH | BooleanValue | AT | PERSENT | HAT | TILDA | BACKTICK
 	;
 
 LINE_COMMENT
