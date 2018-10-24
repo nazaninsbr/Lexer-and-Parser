@@ -91,37 +91,37 @@ expression
 
 logicalOrExpression
 	:
-		logicalAndExpression (op = LOGICALOR  {System.out.println("Operator:"+$op.getText());} logicalAndExpression)*
+		logicalAndExpression (op = LOGICALOR logicalAndExpression {System.out.println("Operator:"+$op.getText());})*
 	;
 
 logicalAndExpression 
 	:
-		comparingExpression (op = LOGICALAND  {System.out.println("Operator:"+$op.getText());} comparingExpression)*
+		comparingExpression (op = LOGICALAND comparingExpression {System.out.println("Operator:"+$op.getText());})*
 	;
 
 comparingExpression
 	:
-		relationExpression (op = ComparisonOperators  {System.out.println("Operator:"+$op.getText());} relationExpression)*
+		relationExpression (op = ComparisonOperators relationExpression {System.out.println("Operator:"+$op.getText());})*
 	;
 
 relationExpression
 	:
-		addSubtractExpression (op = RelationOperators  {System.out.println("Operator:"+$op.getText());} addSubtractExpression)*
+		addSubtractExpression (op = RelationOperators addSubtractExpression {System.out.println("Operator:"+$op.getText());})*
 	;
 
 addSubtractExpression
 	:
-		multiplyExpression (op = (MINUS | PLUS)  {System.out.println("Operator:"+$op.getText());} multiplyExpression)*
+		multiplyExpression (op = (MINUS | PLUS) multiplyExpression {System.out.println("Operator:"+$op.getText());})*
 	;
 
 multiplyExpression
 	:
-		signedAtomExpression (op= (MULT | DIVIDE)  {System.out.println("Operator:"+$op.getText());} signedAtomExpression)*
+		signedAtomExpression (op= (MULT | DIVIDE) signedAtomExpression {System.out.println("Operator:"+$op.getText());})*
 	;
 
 signedAtomExpression
 	:
-		op = (UnaryLogicalOperators | MINUS )  {System.out.println("Operator:"+$op.getText());} logicalTerm
+		op = (UnaryLogicalOperators | MINUS ) logicalTerm {System.out.println("Operator:"+$op.getText());}
 		| logicalTerm 
 	;
 
