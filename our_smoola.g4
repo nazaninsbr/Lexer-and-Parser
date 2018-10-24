@@ -1,3 +1,6 @@
+
+
+
 grammar our_smoola;
 
 program
@@ -7,7 +10,7 @@ program
 
 mainClass
 	:
-		CLASS className = Identifier LBrackets mainMethod RBrackets { System.out.print("ClassDec:"); System.out.println($className.text); }
+		CLASS className1 = Identifier LBrackets mainMethod RBrackets { System.out.print("ClassDec:"); System.out.println($className1.text); }
 	;
 
 classDefinition
@@ -17,12 +20,13 @@ classDefinition
 
 mainMethod
 	:
-		DEF Identifier LParentheses RParentheses COLON 'int' LBrackets methodBody RBrackets
+		DEF mainMethodName = Identifier LParentheses RParentheses COLON 'int' LBrackets methodBody RBrackets{System.out.print("MethodDec:");System.out.println($mainMethodName.text);}
 	;
 
 method
 	:
-		DEF Identifier LParentheses arguments RParentheses COLON type LBrackets methodBody RBrackets
+		DEF MethodName = Identifier {System.out.print("MethodDec:");System.out.print($MethodName.text);}LParentheses arguments RParentheses COLON type LBrackets methodBody RBrackets 
+
 	;
 
 methodBody
@@ -60,7 +64,7 @@ condition
 
 loop
 	:
-		op = WHILE LParentheses condition RParentheses LBrackets (statement)* RBrackets {System.out.println("Conditional:"+$op.getText());}
+		op = WHILE LParentheses condition RParentheses LBrackets (statement)* RBrackets {System.out.println("Loop:"+$op.getText());}
 	;
 
 printstatement
@@ -70,8 +74,8 @@ printstatement
 
 arguments
 	:
-		(Identifier COLON type COMMA)* (Identifier COLON type)
-		|  
+		(argname = Identifier COLON type COMMA{System.out.print(','); System.out.print($argname.text);})* (argname2 = Identifier COLON type{System.out.print(',');System.out.println($argname2.text);})
+		|  {System.out.println(); }
 	;
 
 returnexpression
