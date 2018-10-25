@@ -34,14 +34,14 @@ methodBody
 		(variableDeclaration)* (statement)* returnexpression
 	;	
 
-statement
+statement 
 	:
-		LBrackets statement RBrackets | atomStatement
+		LBrackets statement RBrackets | (atomStatement)+
 	;
 
 atomStatement
 	:
-		statementwithoutDelimiter | statementwithDelimiter Delimiter
+		statementwithoutDelimiter | statementwithDelimiter Delimiter | LBrackets statement RBrackets
 	;
 
 statementwithoutDelimiter
@@ -54,7 +54,7 @@ statementwithDelimiter
 	;
 assignment 
 	:
-		( identifierOrMain | THIS DOT identifierOrMain | arrayAccess) op = AssignmentOperator {System.out.println("Loop:"+$op.getText());} (expression | arrayDefinition) 
+		( identifierOrMain | THIS DOT identifierOrMain | arrayAccess) op = AssignmentOperator {System.out.println("Operator:"+$op.getText());} (expression | arrayDefinition) 
 	;
 
 conditional
