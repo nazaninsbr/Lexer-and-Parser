@@ -12,3 +12,8 @@ java org.antlr.v4.runtime.misc.TestRig our_smoola program -gui < ./Tests/6.txt
 java org.antlr.v4.runtime.misc.TestRig our_smoola program -gui < ./Tests/7.txt
 java org.antlr.v4.runtime.misc.TestRig our_smoola program -gui < ./Tests/8.txt
 java org.antlr.v4.runtime.misc.TestRig our_smoola program -gui < ./Tests/9.txt
+java org.antlr.v4.runtime.misc.TestRig our_smoola program -gui < ./Tests/10.txt
+java org.antlr.v4.runtime.misc.TestRig our_smoola program -gui < ./Tests/11.txt
+java org.antlr.v4.runtime.misc.TestRig our_smoola program -gui < ./Tests/12.txt
+java org.antlr.v4.runtime.misc.TestRig our_smoola program -gui < ./Tests/13.txt
+java org.antlr.v4.runtime.misc.TestRig our_smoola program -gui < ./Tests/14.txt
