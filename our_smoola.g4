@@ -2,7 +2,7 @@ grammar our_smoola;
 
 program
 	:
-		mainClass (classDefinition)*
+		mainClass (classDefinition)* 
 	;
 
 mainClass
@@ -36,8 +36,14 @@ methodBody
 
 statement
 	:
+		LBrackets statement RBrackets | atomStatement
+	;
+
+atomStatement
+	:
 		statementwithoutDelimiter | statementwithDelimiter Delimiter
 	;
+
 statementwithoutDelimiter
 	:
 		loop | conditional 
@@ -48,18 +54,18 @@ statementwithDelimiter
 	;
 assignment 
 	:
-		( identifierOrMain | THIS DOT identifierOrMain | arrayAccess) op = AssignmentOperator {System.out.println("Loop:"+$op.getText());} (expression | arrayDefinition)
+		( identifierOrMain | THIS DOT identifierOrMain | arrayAccess) op = AssignmentOperator {System.out.println("Loop:"+$op.getText());} (expression | arrayDefinition) 
 	;
 
 conditional
 	:
-		op = IF {System.out.println("Conditional:"+$op.getText());} LParentheses condition RParentheses THEN statement 
-		| op1 = IF {System.out.println("Conditional:"+$op1.getText());} LParentheses condition RParentheses THEN statement op2 = ELSE {System.out.println("Conditional:"+$op2.getText());} (LBrackets statement RBrackets | statement ) 
+		op = IF {System.out.println("Conditional:"+$op.getText());} LParentheses condition RParentheses THEN (LBrackets (statement)* RBrackets | statement ) 
+		| op1 = IF {System.out.println("Conditional:"+$op1.getText());} LParentheses condition RParentheses THEN statement op2 = ELSE {System.out.println("Conditional:"+$op2.getText());} (LBrackets (statement)* RBrackets | statement ) 
 	;
 
 condition
 	:
-		logicalOrExpression | BooleanValue
+		logicalOrExpression
 	;
 
 loop
@@ -95,62 +101,56 @@ expression
 
 logicalOrExpression
 	:
-		logicalAndExpression (op = LOGICALOR logicalAndExpression {System.out.println("Operator:"+$op.getText());})*
+		logicalAndExpression (op = LOGICALOR {System.out.println("Operator:"+$op.getText());} logicalAndExpression)*
 	;
 
 logicalAndExpression 
 	:
-		comparingExpression (op = LOGICALAND comparingExpression {System.out.println("Operator:"+$op.getText());})*
+		comparingExpression (op = LOGICALAND {System.out.println("Operator:"+$op.getText());} comparingExpression)*
 	;
 
 comparingExpression
 	:
-		relationExpression (op = ComparisonOperators relationExpression {System.out.println("Operator:"+$op.getText());})*
+		relationExpression (op = ComparisonOperators {System.out.println("Operator:"+$op.getText());} relationExpression)*
 	;
 
 relationExpression
 	:
-		addSubtractExpression (op = RelationOperators addSubtractExpression {System.out.println("Operator:"+$op.getText());})*
+		addSubtractExpression (op = RelationOperators {System.out.println("Operator:"+$op.getText());} addSubtractExpression)*
 	;
 
 addSubtractExpression
 	:
-		multiplyExpression (op = (MINUS | PLUS) multiplyExpression {System.out.println("Operator:"+$op.getText());})* 
+		multiplyExpression (op = (MINUS | PLUS) {System.out.println("Operator:"+$op.getText());} multiplyExpression )* 
 	;
 
 multiplyExpression
 	:
-		signedAtomExpression (op = (MULT | DIVIDE) signedAtomExpression {System.out.println("Operator:"+$op.getText());})*
+		signedAtomExpression (op = (MULT | DIVIDE) {System.out.println("Operator:"+$op.getText());} signedAtomExpression )*
 	;
 
 signedAtomExpression
 	:
-		op = (UnaryLogicalOperators | MINUS ) logicalTerm {System.out.println("Operator:"+$op.getText());}
+		op = (UnaryLogicalOperators | MINUS ) {System.out.println("Operator:"+$op.getText());} logicalTerm 
 		| logicalTerm 
 	;
 
 logicalTerm
 	:
 		LParentheses logicalOrExpression RParentheses
+		| BooleanValue
 		| identifierOrMain
 		| numberAndZero
-		| BooleanValue
 		| arrayAccess
-		| selfVariableAccess
 		| selfMethodAccess
 		| arrayLength
 		| methodCall
 		| classInstantiationAndCall
 	;
 
-selfVariableAccess
-	:
-		THIS DOT identifierOrMain
-	;
-
 selfMethodAccess
 	:
-		THIS DOT identifierOrMain (passingArgument | )
+		THIS DOT identifierOrMain (passingArgument | LParentheses RParentheses)
 	;
 
 arrayLength
@@ -165,7 +165,7 @@ string
 
 variableDeclaration
 	:
-		VAR varName = identifierOrMain COLON (varType = type | varTypeName = identifierOrMain) Delimiter {System.out.print("VarDec:"); System.out.print($varName.text); System.out.print(","); if($varType.text != null) {System.out.println($varType.text);} else {System.out.println($varTypeName.text);} }
+		VAR varName = identifierOrMain COLON varType = type Delimiter {System.out.print("VarDec:"); System.out.print($varName.text); System.out.print(","); System.out.println($varType.text);}
 		| VAR varName = identifierOrMain COLON 'int' LSquareBrackets RSquareBrackets Delimiter {System.out.print("VarDec:"); System.out.print($varName.text); System.out.print(","); System.out.println("int[]");}
 	;
 
@@ -206,11 +206,12 @@ type
 		 'string'
 		| 'int'
 		| 'boolean'
+		| identifierOrMain
 	;
 
 numberAndZero
 	:
-		Number | ZERO
+		Number | (ZERO)+
 	;
 
 identifierOrMain
@@ -399,7 +400,7 @@ ZERO
 
 Number
 	:
-		[1-9][0-9]*
+		[0]*[1-9][0-9]*
 	;
 NEW
 	:
@@ -458,7 +459,7 @@ WhiteSpace
 
 stringSentence
 	:
-		Identifier | numberAndZero | LParentheses | RParentheses | LBrackets | RBrackets | LSquareBrackets | RSquareBrackets |  Delimiter | COLON | COMMA | IF | ELSE | WHILE | THEN | MULT | DIVIDE | PLUS | MINUS |  LOGICALOR | LOGICALAND | PrintCommand | ComparisonOperators | RelationOperators | AssignmentOperator | Dollor | Underscore | UnaryLogicalOperators | QMARK | type | EXTENDS | DEF | VAR | RETURN | CLASS | THIS | LENGTH | BooleanValue | AT | PERSENT | HAT | TILDA | BACKTICK | '|' | '&' | '\\'
+		numberAndZero | LParentheses | RParentheses | LBrackets | RBrackets | LSquareBrackets | RSquareBrackets |  Delimiter | COLON | COMMA | IF | ELSE | WHILE | THEN | MULT | DIVIDE | PLUS | MINUS |  LOGICALOR | LOGICALAND | PrintCommand | ComparisonOperators | RelationOperators | AssignmentOperator | Dollor | Underscore | UnaryLogicalOperators | QMARK | type | EXTENDS | DEF | VAR | RETURN | CLASS | THIS | LENGTH | BooleanValue | AT | PERSENT | HAT | TILDA | BACKTICK | '|' | '&' | '\\' | Identifier
 	;
 
 LINE_COMMENT
