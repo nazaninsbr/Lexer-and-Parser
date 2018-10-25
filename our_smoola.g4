@@ -2,7 +2,7 @@ grammar our_smoola;
 
 program
 	:
-		mainClass (classDefinition)* 
+		mainClass (classDefinition)* EOF
 	;
 
 mainClass
