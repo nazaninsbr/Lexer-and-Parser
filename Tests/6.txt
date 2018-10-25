@@ -1,6 +1,5 @@
 class Test{
 	def main(): int{
-		var j :boolean ;
 		j = true;
 		i = "st  g";
 
