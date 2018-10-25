@@ -7,27 +7,27 @@ program
 
 mainClass
 	:
-		CLASS className1 = Identifier { System.out.print("ClassDec:"); System.out.println($className1.text); } LBrackets mainMethod RBrackets 
+		CLASS className1 = identifierOrMain { System.out.print("ClassDec:"); System.out.println($className1.text); } LBrackets mainMethod RBrackets 
 	;
 
 classDefinition
 	:
-		CLASS className = Identifier (EXTENDS parentClass = Identifier | ) {  if($parentClass.text != null) { System.out.print("ClassDec:"); System.out.print($className.text); System.out.print(','); System.out.println($parentClass.text); } else {System.out.print("ClassDec:"); System.out.println($className.text);}} LBrackets (variableDeclaration)* (method)* RBrackets 
+		CLASS className = identifierOrMain (EXTENDS parentClass = identifierOrMain| ) {  if($parentClass.text != null) { System.out.print("ClassDec:"); System.out.print($className.text); System.out.print(','); System.out.println($parentClass.text); } else {System.out.print("ClassDec:"); System.out.println($className.text);}} LBrackets (variableDeclaration)* (method)* RBrackets 
 	;
 
 mainMethod
 	:
-		DEF mainMethodName = Identifier {System.out.print("MethodDec:");System.out.println($mainMethodName.text);} LParentheses RParentheses COLON 'int' LBrackets mainMethodBody RBrackets
+		DEF mainMethodName = MAIN {System.out.print("MethodDec:");System.out.println($mainMethodName.text);} LParentheses RParentheses COLON 'int' LBrackets mainMethodBody RBrackets
 	;
 
 method
 	:
-		DEF MethodName = Identifier {System.out.print("MethodDec:");System.out.print($MethodName.text);}LParentheses arguments {System.out.println("");} RParentheses COLON type LBrackets methodBody RBrackets
+		DEF MethodName = identifierOrMain {System.out.print("MethodDec:");System.out.print($MethodName.text);}LParentheses arguments {System.out.println("");} RParentheses COLON type LBrackets methodBody RBrackets
 
 	;
 mainMethodBody
 	:
-		(statement)* returnexpression
+		(statement | classInstantiationAndCall Delimiter)* returnexpression
 	;
 methodBody
 	:
@@ -36,7 +36,7 @@ methodBody
 
 statement
 	:
-		statementwithoutDelimiter | statementwithDelimiter Delimiter | returnexpression
+		statementwithoutDelimiter | statementwithDelimiter Delimiter
 	;
 statementwithoutDelimiter
 	:
@@ -44,11 +44,11 @@ statementwithoutDelimiter
 	;
 statementwithDelimiter
 	:
-		assignment | printstatement | methodCall | classInstantiationAndCall
+		assignment | printstatement
 	;
 assignment 
 	:
-		( Identifier | THIS DOT Identifier | arrayAccess) AssignmentOperator (expression | arrayDefinition)
+		( identifierOrMain | THIS DOT identifierOrMain | arrayAccess) op = AssignmentOperator {System.out.println("Loop:"+$op.getText());} (expression | arrayDefinition)
 	;
 
 conditional
@@ -74,7 +74,7 @@ printstatement
 
 arguments
 	:
-		(argname = Identifier {System.out.print(','); System.out.print($argname.text);} COLON type COMMA)* (argname2 = Identifier {System.out.print(',');System.out.print($argname2.text);} COLON type)
+		(argname = identifierOrMain {System.out.print(','); System.out.print($argname.text);} COLON type COMMA)* (argname2 = identifierOrMain {System.out.print(',');System.out.print($argname2.text);} COLON type)
 		|  
 	;
 
@@ -132,8 +132,8 @@ signedAtomExpression
 logicalTerm
 	:
 		LParentheses logicalOrExpression RParentheses
-		| Identifier
-		| Number
+		| identifierOrMain
+		| numberAndZero
 		| BooleanValue
 		| arrayAccess
 		| selfVariableAccess
@@ -145,17 +145,17 @@ logicalTerm
 
 selfVariableAccess
 	:
-		THIS DOT Identifier
+		THIS DOT identifierOrMain
 	;
 
 selfMethodAccess
 	:
-		THIS DOT Identifier (passingArgument | )
+		THIS DOT identifierOrMain (passingArgument | )
 	;
 
 arrayLength
 	:
-		Identifier DOT LENGTH
+		identifierOrMain DOT LENGTH
 	;
 
 string
@@ -165,8 +165,8 @@ string
 
 variableDeclaration
 	:
-		VAR varName = Identifier COLON (varType = type | varTypeName = Identifier) Delimiter {System.out.print("VarDec:"); System.out.print($varName.text); System.out.print(","); if($varType.text != null) {System.out.println($varType.text);} else {System.out.println($varTypeName.text);} }
-		| VAR varName = Identifier COLON 'int' LSquareBrackets RSquareBrackets Delimiter {System.out.print("VarDec:"); System.out.print($varName.text); System.out.print(","); System.out.println("int[]");}
+		VAR varName = identifierOrMain COLON (varType = type | varTypeName = identifierOrMain) Delimiter {System.out.print("VarDec:"); System.out.print($varName.text); System.out.print(","); if($varType.text != null) {System.out.println($varType.text);} else {System.out.println($varTypeName.text);} }
+		| VAR varName = identifierOrMain COLON 'int' LSquareBrackets RSquareBrackets Delimiter {System.out.print("VarDec:"); System.out.print($varName.text); System.out.print(","); System.out.println("int[]");}
 	;
 
 
@@ -177,18 +177,18 @@ arrayDefinition
 
 classInstantiation
 	:
-		NEW Identifier LParentheses RParentheses 
+		NEW identifierOrMain LParentheses RParentheses 
 		| LParentheses classInstantiation RParentheses
 	;
 
 classInstantiationAndCall
 	:
-		classInstantiation DOT Identifier (passingArgument | LParentheses RParentheses)
+		classInstantiation DOT identifierOrMain (passingArgument | LParentheses RParentheses)
 	;
 
 methodCall
 	:
-		 Identifier DOT Identifier (passingArgument | LParentheses RParentheses)
+		 identifierOrMain DOT identifierOrMain (passingArgument | LParentheses RParentheses)
 	;
 
 passingArgument
@@ -198,7 +198,7 @@ passingArgument
 
 arrayAccess
 	:
-		Identifier LSquareBrackets (Number| Identifier) RSquareBrackets
+		identifierOrMain LSquareBrackets (numberAndZero| identifierOrMain) RSquareBrackets
 	;
 
 type
@@ -206,6 +206,16 @@ type
 		 'string'
 		| 'int'
 		| 'boolean'
+	;
+
+numberAndZero
+	:
+		Number | ZERO
+	;
+
+identifierOrMain
+	:
+		Identifier | MAIN
 	;
 
 EXTENDS
@@ -256,6 +266,11 @@ THIS
 WHILE
 	:
 		'while'
+	;
+
+MAIN
+	:
+		'main'
 	;
 
 LENGTH
@@ -377,15 +392,20 @@ AssignmentOperator
 		'='
 	;
 
+ZERO
+	:
+		'0'
+	;
+
 Number
 	:
 		[1-9][0-9]*
-		| '0'
 	;
 NEW
 	:
 		'new'
 	;
+
 Identifier
 	:
 		[a-zA-Z_][a-zA-Z_0-9]*
@@ -438,7 +458,7 @@ WhiteSpace
 
 stringSentence
 	:
-		Identifier | Number | LParentheses | RParentheses | LBrackets | RBrackets | LSquareBrackets | RSquareBrackets |  Delimiter | COLON | COMMA | IF | ELSE | WHILE | THEN | MULT | DIVIDE | PLUS | MINUS |  LOGICALOR | LOGICALAND | PrintCommand | ComparisonOperators | RelationOperators | AssignmentOperator | Dollor | Underscore | UnaryLogicalOperators | QMARK | type | EXTENDS | DEF | VAR | RETURN | CLASS | THIS | LENGTH | BooleanValue | AT | PERSENT | HAT | TILDA | BACKTICK
+		Identifier | numberAndZero | LParentheses | RParentheses | LBrackets | RBrackets | LSquareBrackets | RSquareBrackets |  Delimiter | COLON | COMMA | IF | ELSE | WHILE | THEN | MULT | DIVIDE | PLUS | MINUS |  LOGICALOR | LOGICALAND | PrintCommand | ComparisonOperators | RelationOperators | AssignmentOperator | Dollor | Underscore | UnaryLogicalOperators | QMARK | type | EXTENDS | DEF | VAR | RETURN | CLASS | THIS | LENGTH | BooleanValue | AT | PERSENT | HAT | TILDA | BACKTICK | '|' | '&' | '\\'
 	;
 
 LINE_COMMENT
