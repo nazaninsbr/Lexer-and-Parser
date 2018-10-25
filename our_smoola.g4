@@ -111,12 +111,12 @@ relationExpression
 
 addSubtractExpression
 	:
-		multiplyExpression (op = (MINUS | PLUS) multiplyExpression {System.out.println("Operator:"+$op.getText());})*
+		multiplyExpression ( op = (MINUS | PLUS) multiplyExpression {System.out.println("Operator:"+$op.getText());} )*
 	;
 
 multiplyExpression
 	:
-		signedAtomExpression (op= (MULT | DIVIDE) signedAtomExpression {System.out.println("Operator:"+$op.getText());})*
+		signedAtomExpression (op = (MULT | DIVIDE) signedAtomExpression {System.out.println("Operator:"+$op.getText());})*
 	;
 
 signedAtomExpression
