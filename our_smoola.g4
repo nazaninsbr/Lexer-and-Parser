@@ -22,21 +22,21 @@ mainMethod
 
 method
 	:
-		DEF MethodName = Identifier {System.out.print("MethodDec:");System.out.print($MethodName.text);}LParentheses arguments {System.out.println();} RParentheses COLON type LBrackets methodBody RBrackets
+		DEF MethodName = Identifier {System.out.print("MethodDec:");System.out.print($MethodName.text);}LParentheses arguments {System.out.println("");} RParentheses COLON type LBrackets methodBody RBrackets
 
 	;
 mainMethodBody
 	:
-		(statement | returnexpression)* returnexpression
+		(statement)* returnexpression
 	;
 methodBody
 	:
-		(variableDeclaration)* (statement | returnexpression)* returnexpression
+		(variableDeclaration)* (statement)* returnexpression
 	;	
 
 statement
 	:
-		statementwithoutDelimiter | statementwithDelimiter Delimiter 
+		statementwithoutDelimiter | statementwithDelimiter Delimiter | returnexpression
 	;
 statementwithoutDelimiter
 	:
