@@ -70,7 +70,7 @@ condition
 
 loop
 	:
-		op = WHILE {System.out.println("Loop:"+$op.getText());} LParentheses condition RParentheses LBrackets (statement)* RBrackets 
+		WHILE {System.out.println("Loop:While");} LParentheses condition RParentheses LBrackets (statement)* RBrackets 
 	;
 
 printstatement
@@ -198,7 +198,7 @@ passingArgument
 
 arrayAccess
 	:
-		identifierOrMain LSquareBrackets (numberAndZero| identifierOrMain) RSquareBrackets
+		identifierOrMain LSquareBrackets expression RSquareBrackets
 	;
 
 type
