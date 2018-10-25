@@ -1,6 +1,3 @@
-
-
-
 grammar our_smoola;
 
 program
@@ -123,7 +120,7 @@ addSubtractExpression
 
 multiplyExpression
 	:
-		signedAtomExpression (op= (MULT | DIVIDE) signedAtomExpression {System.out.println("Operator:"+$op.getText());})*
+		signedAtomExpression (op = (MULT | DIVIDE) signedAtomExpression {System.out.println("Operator:"+$op.getText());})*
 	;
 
 signedAtomExpression
