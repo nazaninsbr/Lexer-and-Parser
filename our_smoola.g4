@@ -10,7 +10,7 @@ program
 
 mainClass
 	:
-		CLASS className1 = Identifier LBrackets mainMethod RBrackets { System.out.print("ClassDec:"); System.out.println($className1.text); }
+		CLASS className1 = Identifier { System.out.print("ClassDec:"); System.out.println($className1.text); } LBrackets mainMethod RBrackets 
 	;
 
 classDefinition
@@ -20,18 +20,21 @@ classDefinition
 
 mainMethod
 	:
-		DEF mainMethodName = Identifier LParentheses RParentheses COLON 'int' LBrackets methodBody RBrackets{System.out.print("MethodDec:");System.out.println($mainMethodName.text);}
+		DEF mainMethodName = Identifier {System.out.print("MethodDec:");System.out.println($mainMethodName.text);} LParentheses RParentheses COLON 'int' LBrackets mainMethodBody RBrackets
 	;
 
 method
 	:
-		DEF MethodName = Identifier {System.out.print("MethodDec:");System.out.print($MethodName.text);}LParentheses arguments RParentheses COLON type LBrackets methodBody RBrackets 
+		DEF MethodName = Identifier {System.out.print("MethodDec:");System.out.print($MethodName.text);}LParentheses arguments {System.out.println();} RParentheses COLON type LBrackets methodBody RBrackets
 
 	;
-
+mainMethodBody
+	:
+		(statement | returnexpression)* returnexpression
+	;
 methodBody
 	:
-		(variableDeclaration)* (statement)* returnexpression
+		(variableDeclaration)* (statement | returnexpression)* returnexpression
 	;	
 
 statement
@@ -64,7 +67,7 @@ condition
 
 loop
 	:
-		op = WHILE LParentheses condition RParentheses LBrackets (statement)* RBrackets {System.out.println("Loop:"+$op.getText());}
+		op = WHILE {System.out.println("Loop:"+$op.getText());} LParentheses condition RParentheses LBrackets (statement)* RBrackets 
 	;
 
 printstatement
@@ -74,8 +77,8 @@ printstatement
 
 arguments
 	:
-		(argname = Identifier COLON type COMMA{System.out.print(','); System.out.print($argname.text);})* (argname2 = Identifier COLON type{System.out.print(',');System.out.println($argname2.text);})
-		|  {System.out.println(); }
+		(argname = Identifier {System.out.print(','); System.out.print($argname.text);} COLON type COMMA)* (argname2 = Identifier {System.out.print(',');System.out.print($argname2.text);} COLON type)
+		|  
 	;
 
 returnexpression
@@ -115,7 +118,7 @@ relationExpression
 
 addSubtractExpression
 	:
-		multiplyExpression (op = (MINUS | PLUS) multiplyExpression {System.out.println("Operator:"+$op.getText());})*
+		multiplyExpression (op = (MINUS | PLUS) multiplyExpression {System.out.println("Operator:"+$op.getText());})* 
 	;
 
 multiplyExpression
