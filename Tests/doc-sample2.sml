@@ -5,10 +5,4 @@ class Test {
         # This is a comment
     }
 
-    def method(arg1: int, arg2: boolean): int {
-        #body
-        var instance : ClassName;
-        instance = new ClassName();
-        return 0;
-    }
 }
