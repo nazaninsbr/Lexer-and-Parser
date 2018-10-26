@@ -1,6 +1,6 @@
 class b {
     def main() : int {
-        return arr[009+i]
+        return arr[009+i];
     }
 }
 
