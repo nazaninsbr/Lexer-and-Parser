@@ -14,7 +14,7 @@ class Book {
 		k = (a.x()).p(v.b());
 		p = (A.b()).c().d();
 		if (new int[10] == a) then
-			k = (a.x()).p(v.b()+(a.n().c()).v().t()+12);
+			k = (a.x()).p(v.b()+(a.n().c()).v().t(34 + -12 + l.d()+12);
 		return a.b().c();
 	}
 }
