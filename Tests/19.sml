@@ -1,6 +1,7 @@
 class Test {
 	def main() : int {
 		writeln(new A().x());
+		x = b = new int[0] = this.x = r[12] = 1;
 		return 0;
 	}
 }

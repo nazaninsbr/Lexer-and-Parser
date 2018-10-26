@@ -54,7 +54,7 @@ statementwithDelimiter
 	;
 assignment 
 	:
-		( identifierOrMain | THIS DOT identifierOrMain | arrayAccess) op = AssignmentOperator {System.out.println("Operator:"+$op.getText());} (expression | arrayDefinition) 
+		expression op = AssignmentOperator {System.out.println("Operator:"+$op.getText());} ( expression op = AssignmentOperator {System.out.println("Operator:"+$op.getText());} )* (expression | arrayDefinition) 
 	;
 
 conditional
@@ -143,6 +143,7 @@ logicalTerm
 		| numberAndZero
 		| arrayAccess
 		| selfMethodAccess
+		| selfVariableAccess
 		| arrayLength
 		| methodCall
 		| classInstantiationAndCall
@@ -152,6 +153,11 @@ logicalTerm
 selfMethodAccess
 	:
 		THIS DOT identifierOrMain (passingArgument | LParentheses RParentheses)
+	;
+
+selfVariableAccess
+	:
+		THIS DOT identifierOrMain
 	;
 
 arrayLength
