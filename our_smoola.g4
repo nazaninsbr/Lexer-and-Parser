@@ -146,6 +146,7 @@ logicalTerm
 		| arrayLength
 		| methodCall
 		| classInstantiationAndCall
+		| arrayDefinition
 	;
 
 selfMethodAccess
