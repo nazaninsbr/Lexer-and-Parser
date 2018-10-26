@@ -143,7 +143,6 @@ logicalTerm
 		| numberAndZero
 		| arrayAccess
 		| selfMethodAccess
-		| selfVariableAccess
 		| arrayLength
 		| methodCall
 		| classInstantiationAndCall
@@ -152,12 +151,15 @@ logicalTerm
 
 selfMethodAccess
 	:
-		THIS DOT identifierOrMain (passingArgument | LParentheses RParentheses)
+		LParentheses selfMethodAccess RParentheses (DOT atomSelfMethodAccess)*
+		| atomSelfMethodAccess (DOT atomSelfMethodAccess)*
+		
 	;
 
-selfVariableAccess
+atomSelfMethodAccess
 	:
-		THIS DOT identifierOrMain
+		THIS DOT identifierOrMain (passingArgument | LParentheses RParentheses)
+		| identifierOrMain (passingArgument | LParentheses RParentheses)
 	;
 
 arrayLength

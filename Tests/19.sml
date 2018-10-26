@@ -1,7 +1,7 @@
 class Test {
 	def main() : int {
 		writeln(new A().x());
-		x = b = new int[0] = this.x = r[12] = 1;
+		x = b = new int[0] = r[12] = 1;
 		return 0;
 	}
 }
@@ -15,6 +15,7 @@ class Book {
 		p = (A.b()).c().d();
 		if (new int[10] == a) then
 			k = 2;
+		x = (this.x()).y().u();
 		return a.b().c();
 	}
 }
