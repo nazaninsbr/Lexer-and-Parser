@@ -166,13 +166,12 @@ string
 variableDeclaration
 	:
 		VAR varName = identifierOrMain COLON varType = type Delimiter {System.out.print("VarDec:"); System.out.print($varName.text); System.out.print(","); System.out.println($varType.text);}
-		| VAR varName = identifierOrMain COLON 'int' LSquareBrackets RSquareBrackets Delimiter {System.out.print("VarDec:"); System.out.print($varName.text); System.out.print(","); System.out.println("int[]");}
 	;
 
 
 arrayDefinition
 	:
-		NEW 'int' LSquareBrackets Number RSquareBrackets 
+		NEW 'int' LSquareBrackets expression RSquareBrackets 
 	;
 
 classInstantiation
@@ -207,6 +206,7 @@ type
 		| 'int'
 		| 'boolean'
 		| identifierOrMain
+		| 'int' LSquareBrackets RSquareBrackets	
 	;
 
 numberAndZero
