@@ -1,5 +1,6 @@
 class Test {
 	def main() : int {
+		writeln(new A().x());
 		return 0;
 	}
 }
@@ -9,6 +10,7 @@ class Book {
 		l = (((a.n()).c()).v()).t();
 		s = (a.n().c()).v().t();
 		k = (a.x()).p(v.b());
+		p = (A.b()).c().d();
 		if (new int[10] == a) then
 			k = (a.x()).p(v.b()+(a.n().c()).v().t()+12);
 		return a.b().c();
