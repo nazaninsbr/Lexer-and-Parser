@@ -12,7 +12,6 @@ class Book {
 		if (f.dictionary()) then
 			x = (a.n()).c();
 		l = ((a.n()).c()).v();
-		t = ((a()).x()).l();
 		u = ((new a()).x()).l();
 		t = (A.b()).c().d();
 		return a.b().c();

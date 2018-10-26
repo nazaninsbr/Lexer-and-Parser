@@ -151,15 +151,14 @@ logicalTerm
 
 selfMethodAccess
 	:
-		LParentheses selfMethodAccess RParentheses (DOT atomSelfMethodAccess)*
-		| atomSelfMethodAccess (DOT atomSelfMethodAccess)*
+		LParentheses selfMethodAccess RParentheses (DOT identifierOrMain (passingArgument | LParentheses RParentheses))*
+		| atomSelfMethodAccess (DOT identifierOrMain (passingArgument | LParentheses RParentheses))*
 		
 	;
 
 atomSelfMethodAccess
 	:
 		THIS DOT identifierOrMain (passingArgument | LParentheses RParentheses)
-		| identifierOrMain (passingArgument | LParentheses RParentheses)
 	;
 
 arrayLength
@@ -198,14 +197,13 @@ classInstantiationAndCall
 
 methodCall
 	:
-		LParentheses methodCall RParentheses (DOT atomMethodCall)*
-		| atomMethodCall (DOT atomMethodCall)*
+		LParentheses methodCall RParentheses (DOT identifierOrMain (passingArgument | LParentheses RParentheses))*
+		| atomMethodCall (DOT identifierOrMain (passingArgument | LParentheses RParentheses))*
 	;
 
 atomMethodCall
 	:
 		identifierOrMain DOT identifierOrMain (passingArgument | LParentheses RParentheses)
-		| identifierOrMain (passingArgument | LParentheses RParentheses)
 	;
 
 passingArgument

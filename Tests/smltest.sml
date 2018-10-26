@@ -55,7 +55,6 @@ class Test1{
 
     }
     def testMethod(): int{
-        this.i = 10;
         i=10;
         writeln(this.salam());
         return 0;
