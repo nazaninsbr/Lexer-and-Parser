@@ -7,11 +7,12 @@ class Test {
 
 class Book {
 	def main (f1: int, main: string) : int[] {
-		x = ((a.n()).c()).v();
+		y = a.b(); 
+		z = new a().n(x, y);
+		x = (a.n()).c();
+		l = ((a.n()).c()).v();
+		t = ((a()).x()).l();
+		u = ((new a()).x()).l();
 		return a.b().c();
-	}
-
-	def f(): string {
-		return (B||C) + (m*9) - 3;
 	}
 }

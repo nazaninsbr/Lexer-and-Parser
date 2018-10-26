@@ -188,9 +188,14 @@ classInstantiationAndCall
 
 methodCall
 	:
-		 identifierOrMain DOT methodCall 
-		 | identifierOrMain (passingArgument | LParentheses RParentheses)
-		 | LParentheses methodCall RParentheses
+		LParentheses methodCall RParentheses (DOT atomMethodCall)*
+		| atomMethodCall (DOT atomMethodCall)*
+	;
+
+atomMethodCall
+	:
+		identifierOrMain DOT identifierOrMain (passingArgument | LParentheses RParentheses)
+		| identifierOrMain (passingArgument | LParentheses RParentheses)
 	;
 
 passingArgument
