@@ -65,7 +65,7 @@ conditional
 
 condition
 	:
-		logicalOrExpression | assignment
+		logicalOrExpression
 	;
 
 loop
@@ -156,6 +156,7 @@ selfMethodAccess
 arrayLength
 	:
 		identifierOrMain DOT LENGTH
+		| arrayDefinition DOT LENGTH
 	;
 
 string
@@ -187,7 +188,14 @@ classInstantiationAndCall
 
 methodCall
 	:
-		 identifierOrMain DOT identifierOrMain (passingArgument | LParentheses RParentheses)
+		LParentheses methodCall RParentheses (DOT atomMethodCall)*
+		| atomMethodCall (DOT atomMethodCall)*
+	;
+
+atomMethodCall
+	:
+		identifierOrMain DOT identifierOrMain (passingArgument | LParentheses RParentheses)
+		| identifierOrMain (passingArgument | LParentheses RParentheses)
 	;
 
 passingArgument

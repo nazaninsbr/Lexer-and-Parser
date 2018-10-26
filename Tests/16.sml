@@ -16,7 +16,7 @@ class a extends b {
         var x : int[];
         var x : boolean;
         var x : string;
-        s = new int [a + sd + -1 + 45];
+        s = new int [a + sd + -1 + 45].length;
         if(
             !x == 1 ||
             x[x*2 + 5*x] == true &&
@@ -32,7 +32,7 @@ class a extends b {
             a = a + 1;
         }
 
-        if (i=4) then {
+        if (i==4) then {
             i = 5;
         }
         
