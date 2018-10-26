@@ -19,5 +19,6 @@ class PrimeCheck
 	   writeln(" is a Prime Number");
 	else
 	   writeln(num + 3);
+	   return a.b().c();
    }
 }

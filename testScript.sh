@@ -45,6 +45,6 @@ java org.antlr.v4.gui.TestRig our_smoola program < ./Tests/smltest.sml
 echo 18
 java org.antlr.v4.gui.TestRig our_smoola program < ./Tests/18.sml
 echo 19
-java org.antlr.v4.gui.TestRig our_smoola program < ./Tests/19.sml
+java org.antlr.v4.gui.TestRig our_smoola program -gui < ./Tests/19.sml
 echo 20
-java org.antlr.v4.gui.TestRig our_smoola program < ./Tests/20.sml
+java org.antlr.v4.gui.TestRig our_smoola program -gui < ./Tests/20.sml
