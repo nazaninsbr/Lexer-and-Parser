@@ -48,3 +48,15 @@ echo 19
 java org.antlr.v4.gui.TestRig our_smoola program < ./Tests/19.sml
 echo 20
 java org.antlr.v4.gui.TestRig our_smoola program < ./Tests/20.sml
+echo "doc-sample2"
+java org.antlr.v4.gui.TestRig our_smoola program < ./Tests/doc-sample2.sml
+echo "doc-sample3"
+java org.antlr.v4.gui.TestRig our_smoola program < ./Tests/doc-sample3.sml
+echo "doc-sample4"
+java org.antlr.v4.gui.TestRig our_smoola program < ./Tests/doc-sample4.sml
+echo "doc-sample5"
+java org.antlr.v4.gui.TestRig our_smoola program < ./Tests/doc-sample5.sml
+echo "doc-sample6"
+java org.antlr.v4.gui.TestRig our_smoola program < ./Tests/doc-sample6.sml
+echo "our_smoola_2Lexer"
+java org.antlr.v4.gui.TestRig our_smoola program < ./Tests/our_smoola_2Lexer.sml
