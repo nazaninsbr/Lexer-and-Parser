@@ -8,7 +8,7 @@ class Test {
 
 class Book {
 	def main (f1: int, main: string) : int[] {
-		k = (a.x()).p(v.b()+(a.n().c()).v().t(34 + -12 + l.d()+12);
+		k = (a.x()).p(v.b()+(a.n().c()).v().t(34 + -12 + l.d()+12));
 		l = (((a.n()).c()).v()).t();
 		s = (a.n().c()).v().t();
 		k = (a.x()).p(v.b());

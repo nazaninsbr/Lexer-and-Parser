@@ -5,7 +5,7 @@ class PrimeCheck
 	writeln("Enter any number:");
 	#capture the input in an integer
 	num = scan().nextInt();
-    scan().close();
+    new scan().close();
 	while(i< num/2)
 	{
         temp=num*i;
