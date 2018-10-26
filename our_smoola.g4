@@ -183,7 +183,7 @@ classInstantiation
 
 classInstantiationAndCall
 	:
-		classInstantiation DOT identifierOrMain (passingArgument | LParentheses RParentheses)
+		classInstantiation DOT identifierOrMain (passingArgument | LParentheses RParentheses) 
 	;
 
 methodCall
