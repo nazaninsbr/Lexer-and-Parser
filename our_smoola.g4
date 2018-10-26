@@ -65,7 +65,7 @@ conditional
 
 condition
 	:
-		logicalOrExpression
+		logicalOrExpression | assignment
 	;
 
 loop
@@ -80,7 +80,7 @@ printstatement
 
 arguments
 	:
-		(argname = identifierOrMain {System.out.print(','); System.out.print($argname.text);} COLON (type | 'int' LSquareBrackets RSquareBrackets) COMMA)* (argname2 = identifierOrMain {System.out.print(',');System.out.print($argname2.text);} COLON (type | 'int' LSquareBrackets RSquareBrackets))
+		(argname = identifierOrMain {System.out.print(','); System.out.print($argname.text);} COLON type COMMA)* argname2 = identifierOrMain {System.out.print(',');System.out.print($argname2.text);} COLON type
 		|  
 	;
 
@@ -116,7 +116,7 @@ comparingExpression
 
 relationExpression
 	:
-		addSubtractExpression (op = RelationOperators {System.out.println("Operator:"+$op.getText());} addSubtractExpression)*
+		addSubtractExpression (op = RelationOperators addSubtractExpression)*
 	;
 
 addSubtractExpression
@@ -205,8 +205,8 @@ type
 		 'string'
 		| 'int'
 		| 'boolean'
-		| identifierOrMain
-		| 'int' LSquareBrackets RSquareBrackets	
+		| 'int' LSquareBrackets RSquareBrackets
+		| identifierOrMain	
 	;
 
 numberAndZero
