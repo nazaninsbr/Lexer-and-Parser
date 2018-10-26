@@ -80,7 +80,7 @@ printstatement
 
 arguments
 	:
-		(argname = identifierOrMain {System.out.print(','); System.out.print($argname.text);} COLON type COMMA)* (argname2 = identifierOrMain {System.out.print(',');System.out.print($argname2.text);} COLON type)
+		(argname = identifierOrMain {System.out.print(','); System.out.print($argname.text);} COLON (type | 'int' LSquareBrackets RSquareBrackets) COMMA)* (argname2 = identifierOrMain {System.out.print(',');System.out.print($argname2.text);} COLON (type | 'int' LSquareBrackets RSquareBrackets))
 		|  
 	;
 

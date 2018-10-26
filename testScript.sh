@@ -34,3 +34,5 @@ echo 14
 java org.antlr.v4.gui.TestRig our_smoola program < ./Tests/14.sml
 echo 15
 java org.antlr.v4.gui.TestRig our_smoola program < ./Tests/15.sml
+echo 16
+java org.antlr.v4.gui.TestRig our_smoola program < ./Tests/16.sml
