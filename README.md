@@ -1,4 +1,5 @@
-# Todo
+# Smoola Lexer and Parser
 
-1. check to see if the stringSentence covers everything 
-2. correct the comment sentence because it surely has the same problem 
+Smoola is a made up language for which we have created a lexer and parser. 
+
+You can test the code using the `testScript` files. 
