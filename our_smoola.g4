@@ -131,7 +131,7 @@ multiplyExpression
 
 signedAtomExpression
 	:
-		op = (UnaryLogicalOperators | MINUS ) {System.out.println("Operator:"+$op.getText());} logicalTerm 
+		(op = (UnaryLogicalOperators | MINUS ) {System.out.println("Operator:"+$op.getText());})* logicalTerm 
 		| logicalTerm 
 	;
 

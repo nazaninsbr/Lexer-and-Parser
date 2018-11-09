@@ -10,6 +10,7 @@ class Book extends Library {
 	var i : Rectangle; 
 
 	def x (f1: int) : int {
+		i =--i;
 		if (3||true) then
 			k = false;
 		else
